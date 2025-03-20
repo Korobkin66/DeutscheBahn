@@ -33,7 +33,7 @@ for station in station_number:
     folder = 'known_changes_folder'
     dt = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
-    with open(f'{folder}/{station}_{dt}.xml', 'wb') as foutput:
+    with open(f'{folder}/fchg-{station}_{dt}.xml', 'wb') as foutput:
         foutput.write(response.content)
 
 # print(response.text)

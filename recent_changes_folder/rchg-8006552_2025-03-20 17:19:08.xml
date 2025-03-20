@@ -1,0 +1,77 @@
+<timetable station="Wolfsburg Hbf" eva="8006552">
+
+<s id="-348564877984200386-2503201409-8" eva="8006552">
+    <m id="r2260946" t="h" from="2408182151" to="2504042359" cat="Information" ts="2408230832" ts-tts="25-03-19 23:16:04.686" pr="3" del="1"/>
+    <m id="r2390470" t="h" from="2503201412" to="2503201642" cat="Störung" ts="2503201443" ts-tts="25-03-20 14:43:50.946" pr="1"/>
+    <m id="r2390093" t="h" from="2503200912" to="2503202212" cat="Information" ts="2503200023" ts-tts="25-03-20 00:23:24.195" pr="3"/>
+    <ar cpth="Frankfurt(M) Flughafen Fernbf|Frankfurt(Main)Süd|Hanau Hbf|Kassel-Wilhelmshöhe|Göttingen|Hildesheim Hbf|Braunschweig Hbf" ppth="Frankfurt(M) Flughafen Fernbf|Frankfurt(Main)Süd|Fulda|Kassel-Wilhelmshöhe|Göttingen|Hildesheim Hbf|Braunschweig Hbf" pp="5" ct="2503201811" pt="2503201719">
+        <m id="r15024602" t="d" c="36" ts="2503200215" ts-tts="25-03-20 02:15:38.184"/>
+        <m id="r15038857" t="f" c="0" ts="2503201120" ts-tts="25-03-20 11:20:42.202"/>
+        <m id="r15046818" t="d" c="3" ts="2503201430" ts-tts="25-03-20 14:30:34.441"/>
+        <m id="r15046880" t="d" c="3" ts="2503201432" ts-tts="25-03-20 14:32:39.177"/>
+    </ar>
+    <dp cpth="Stendal Hbf|Berlin-Spandau|Berlin Hbf|Berlin Südkreuz" ppth="Stendal Hbf|Berlin-Spandau|Berlin Hbf|Berlin Südkreuz" pp="5" ct="2503201812" pt="2503201720">
+        <m id="r15024602" t="d" c="36" ts="2503200215" ts-tts="25-03-20 02:15:38.184"/>
+        <m id="r15038857" t="f" c="0" ts="2503201120" ts-tts="25-03-20 11:20:42.202"/>
+        <m id="r15046818" t="d" c="3" ts="2503201430" ts-tts="25-03-20 14:30:34.441"/>
+        <m id="r15046880" t="d" c="3" ts="2503201432" ts-tts="25-03-20 14:32:39.177"/>
+    </dp>
+    <tl f="F" t="p" o="80" c="ICE" n="796"/>
+</s>
+
+
+<s id="598027215654016852-2503201634-9" eva="8006552">
+    <ar ct="2503201746" l="RE6"/>
+</s>
+
+
+<s id="4961782681481677440-2503200959-21" eva="8006552">
+    <m id="r2297273" t="h" from="2412150000" to="2512132359" cat="Information" ts="2412142300" ts-tts="25-03-19 23:16:04.688" pr="2"/>
+    <m id="r2390470" t="h" from="2503201412" to="2503201642" cat="Störung" ts="2503201443" ts-tts="25-03-20 14:43:50.946" pr="1"/>
+    <ar ct="2503201836">
+        <m id="r15044862" t="d" c="63" ts="2503201349" ts-tts="25-03-20 13:49:14.024"/>
+        <m id="r15046908" t="f" c="0" ts="2503201433" ts-tts="25-03-20 14:33:26.026"/>
+    </ar>
+    <dp ct="2503201838">
+        <m id="r15044862" t="d" c="63" ts="2503201349" ts-tts="25-03-20 13:49:14.024"/>
+        <m id="r15046908" t="f" c="0" ts="2503201433" ts-tts="25-03-20 14:33:26.026"/>
+    </dp>
+</s>
+
+
+<s id="-8582937126189412550-2503202118-1" eva="8006552">
+    <dp ct="2503202118" l="RE50"/>
+</s>
+
+
+<s id="-876278268476044727-2503201451-9" eva="8006552">
+    <m id="r2390100" t="h" from="2503200633" to="2503201927" cat="Information" ts="2503200037" ts-tts="25-03-20 00:37:16.029" pr="2"/>
+    <ar ppth="Düsseldorf Hbf|Duisburg Hbf|Essen Hbf|Dortmund Hbf|Hamm(Westf)Hbf|Bielefeld Hbf|Minden(Westf)|Hannover Hbf" pp="5" ct="2503201812" pt="2503201802">
+        <m id="r15022015" t="d" c="36" ts="2503192358" ts-tts="25-03-19 23:58:44.975"/>
+        <m id="r15024738" t="q" c="80" ts="2503200239" ts-tts="25-03-20 02:39:33.982"/>
+        <m id="r15048903" t="d" c="43" ts="2503201512" ts-tts="25-03-20 15:12:59.435"/>
+        <m id="r15050144" t="d" c="43" ts="2503201534" ts-tts="25-03-20 15:34:50.722"/>
+    </ar>
+    <dp ppth="Berlin-Spandau|Berlin Hbf|Berlin Ostbahnhof" pp="5" ct="2503201813" pt="2503201803">
+        <m id="r15022015" t="d" c="36" ts="2503192358" ts-tts="25-03-19 23:58:44.975"/>
+        <m id="r15024738" t="q" c="80" ts="2503200239" ts-tts="25-03-20 02:39:33.982"/>
+        <m id="r15048903" t="d" c="43" ts="2503201512" ts-tts="25-03-20 15:12:59.435"/>
+        <m id="r15050144" t="d" c="43" ts="2503201534" ts-tts="25-03-20 15:34:50.722"/>
+    </dp>
+    <tl f="F" t="e" o="80" c="ICE" n="2947"/>
+    <ref>
+        <tl f="F" t="p" o="80" c="ICE" n="641"/>
+    </ref>
+</s>
+
+
+<s id="-1457168968992517383-2503201714-1" eva="8006552">
+    <dp ct="2503201716" l="RE30"/>
+</s>
+
+
+<s id="5529314417488014783-2503201706-11" eva="8006552">
+    <ar ct="2503201814" l="RB35"/>
+</s>
+
+</timetable>
