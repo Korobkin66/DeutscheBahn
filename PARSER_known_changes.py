@@ -4,7 +4,7 @@ import sqlite3
 
 # Посмотреть изменились ли properties в описании!!!
 
- 
+
 class KC_TrainSchedule:
     def __init__(self, db_name="DB.db"):
         self.conn = sqlite3.connect(db_name)
@@ -33,6 +33,11 @@ class KC_TrainSchedule:
 
     def close(self):
         self.conn.close()
+
+    def del_all_hell(self):  # удаление таблицы
+        self.cursor.execute('''
+        DROP TABLE kc_schedule
+        ''')
 
 
 class TrainScheduleParser:
@@ -80,9 +85,15 @@ class TrainScheduleParser:
 def parse_plan_data(schedule):
     for train in schedule:
         yield (
-            train['id'], train["details"]["station"], train["details"]["category"], 
-            train["details"]["number"], train["arrival"]["time"], train["arrival"]["platform"],
-            train["arrival"]["route"], train["departure"]["time"], train["departure"]["platform"],
+            train['id'],
+            train["details"]["station"],
+            train["details"]["category"],
+            train["details"]["number"],
+            train["arrival"]["time"],
+            train["arrival"]["platform"],
+            train["arrival"]["route"],
+            train["departure"]["time"],
+            train["departure"]["platform"],
             train["departure"]["route"]
         )
 
@@ -99,6 +110,6 @@ if __name__ == "__main__":
             parsed_data = parser.parse()
             for station in parse_plan_data(parsed_data):
                 db.insert_kc_schedule(station)
-            print("Данные сохранены в БД.")
-            db.close()
-
+    print("Данные сохранены в БД.")
+    # db.del_all_hell() # удаление таблицы
+    db.close()
