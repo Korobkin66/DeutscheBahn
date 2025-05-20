@@ -99,7 +99,7 @@ def parse_plan_data(schedule):
 
 
 if __name__ == "__main__":
-    folder_path = "known_changes_folder"
+    folder_path = "../known_changes_folder"
     db = KC_TrainSchedule()
 
     for filename in os.listdir(folder_path):

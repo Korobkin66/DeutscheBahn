@@ -43,3 +43,5 @@ WTF_CSRF_ENABLED = True
 WTF_CSRF_TIME_LIMIT = None  # или установите конкретное значение в секундах, например 3600
 
 # Дополнительные настройки могут быть добавлены здесь
+ALLOWED_SQLALCHEMY_DATABASES = ['sqlite']
+PREVENT_UNSAFE_DB_CONNECTIONS = False

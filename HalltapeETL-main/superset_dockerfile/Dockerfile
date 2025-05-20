@@ -6,7 +6,10 @@ USER root
 RUN pip install --upgrade pip
 
 # Установка clickhouse коннектора
-RUN pip install clickhouse-connect
+RUN pip install clickhouse-connect \
+pillow
+
+# RUN pip install --no-cache-dir psycopg2-binary pillow
 
 # Установка системных зависимостей
 RUN apt-get update && apt-get install -y \

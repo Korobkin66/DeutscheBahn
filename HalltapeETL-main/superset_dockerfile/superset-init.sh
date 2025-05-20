@@ -19,9 +19,9 @@ superset run -p 8088 -h 0.0.0.0 --with-threads --reload --debugger
 # sleep 60
 
 # # Добавление подключения к базе данных PostgreSQL
-# superset dbs add \
-#   --database-name box_office \
-#   --sqlalchemy-uri postgresql+psycopg2://airflow:airflow@postgres:5432/box_office \
-#   --configuration-method sql \
-#   --username admin \
-#   --password admin
+superset dbs add \
+  --database-name box_office \
+  --sqlalchemy-uri postgresql+psycopg2://airflow:airflow@postgres:5432/box_office \
+  --configuration-method sql \
+  --username admin \
+  --password admin

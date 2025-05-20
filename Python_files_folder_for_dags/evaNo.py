@@ -30,7 +30,7 @@ conn.close()
 for station in station_number:
 
     response = requests.get(url+station, headers=headers)
-    folder = 'known_changes_folder'
+    folder = '../known_changes_folder'
     dt = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
     with open(f'{folder}/fchg-{station}_{dt}.xml', 'wb') as foutput:

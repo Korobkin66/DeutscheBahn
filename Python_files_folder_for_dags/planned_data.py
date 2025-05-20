@@ -27,7 +27,7 @@ for station in station_number:
 
     dt_plan = datetime.today().strftime('%y%m%d/%H')
     response = requests.get(f'{url}/{station}/{dt_plan}', headers=headers)
-    folder = 'plan_data_folder'
+    folder = '../plan_data_folder'
     dt = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
     with open(f'{folder}/plan_d-{station}_{dt}.xml', 'wb') as foutput:

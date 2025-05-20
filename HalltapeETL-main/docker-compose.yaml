@@ -1,4 +1,7 @@
 x-airflow-common: &airflow-common
+  build:
+    context: ./airflow_dockerfile
+    dockerfile: Dockerfile
   environment:
     &airflow-common-env
     AIRFLOW_CORE_EXECUTOR: CeleryExecutor
@@ -12,6 +15,7 @@ x-airflow-common: &airflow-common
     _AIRFLOW_WWW_USER_CREATE: 'true'
     _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME:-admin}
     _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD:-admin}
+    AIRFLOW_CONN_SQLITE_DB: sqlite:////opt/airflow/DB.db
   volumes:
     - ./data_lake:/opt/data_lake
     - ./data_lake/monitoring:/opt/data_lake/monitoring
@@ -21,6 +25,11 @@ x-airflow-common: &airflow-common
     - ./plugins:/opt/airflow/plugins
     - ./scripts:/opt/airflow/scripts
     - ./dbt_click:/opt/dbt_click
+    - ../DB.db:/opt/airflow/DB.db
+    - ../plan_data_folder:/opt/airflow/plan_data_folder
+    - ../Python_files_folder_for_dags:/opt/airflow/Python_files_folder_for_dags
+    - ../known_changes_folder:/opt/airflow/known_changes_folder
+    - ../plan_data_folder:/opt/airflow/plan_data_folder
   depends_on:
     postgres:
       condition: service_healthy
@@ -65,51 +74,6 @@ services:
     networks:
       - all_in_one
 
-  af-webserver:
-    <<: *airflow-common
-    build:
-      context: ./airflow_dockerfile
-      dockerfile: Dockerfile
-    container_name: af-webserver
-    environment:
-      *airflow-common-env
-    command: webserver
-    ports:
-      - "8080:8080"
-    restart: always
-
-  af-scheduler:
-    <<: *airflow-common
-    build:
-      context: ./airflow_dockerfile
-      dockerfile: Dockerfile
-    container_name: af-scheduler
-    environment:
-      *airflow-common-env
-    command: scheduler
-    restart: always
-
-  af-worker:
-    <<: *airflow-common
-    build:
-      context: ./airflow_dockerfile
-      dockerfile: Dockerfile
-    container_name: af-worker
-    environment:
-      *airflow-common-env
-    command: version
-    restart: always
-
-  airflow-init:
-    <<: *airflow-common
-    build:
-      context: ./airflow_dockerfile
-      dockerfile: Dockerfile
-    container_name: airflow-init
-    command: version
-    environment:
-      <<: *airflow-common-env
-
   superset:
     container_name: superset
     build:
@@ -121,6 +85,7 @@ services:
       - ADMIN_PASSWORD=admin
     volumes:
       - ./superset_data:/app/superset_home
+      - ../DB.db:/app/superset_home/DB.db
     ports: 
       - '8088:8088'
     depends_on:
@@ -128,142 +93,47 @@ services:
     networks:
       - all_in_one
 
-  jupyter:
-    container_name: jupyter_notebook
-    build:
-      context: ./jupyter_dockerfile
-      dockerfile: Dockerfile
+  af-webserver:
+    <<: *airflow-common
+    container_name: af-webserver
+    command: webserver
     ports:
-      - "10000:8888"
-      - "4040:4040"
-    volumes:
-      - ./synthetic_data:/home/jovyan/source
-      - ./data_lake:/home/jovyan/data_lake
-      - ./jupyter_notebook:/home/jovyan
-    command: jupyter notebook --no-browser --NotebookApp.token='' --NotebookApp.password='' --ip='*' --allow-root
-    environment:
-      - GRANT_SUDO=yes
-    user: root
+      - "8080:8080"
     restart: always
-    networks:
-      - all_in_one
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.0
-    hostname: zookeeper
-    container_name: zookeeper
-    ports:
-      - '2181:2181'
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    healthcheck:
-      test: echo srvr | nc zookeeper 2181 || exit 1
-      start_period: 10s
-      retries: 20
-      interval: 10s
-    networks:
-      all_in_one:
+  af-scheduler:
+    <<: *airflow-common
+    container_name: af-scheduler
+    command: scheduler
+    restart: always
 
-  broker:
-    image: confluentinc/cp-kafka:7.4.0
-    hostname: broker
-    container_name: broker
-    ports:
-      - '29092:29092'
-      - '9092:9092'
-      - '9101:9101'
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      KAFKA_JMX_PORT: 9101
-      KAFKA_JMX_HOSTNAME: localhost
-    healthcheck:
-      test: nc -z localhost 9092 || exit -1
-      start_period: 15s
-      interval: 5s
-      timeout: 10s
-      retries: 10
-    networks:
-      all_in_one:
+  af-worker:
+    <<: *airflow-common
+    container_name: af-worker
+    command: celery worker
+    restart: always
 
-  control-center:
-    image: confluentinc/cp-enterprise-control-center:7.4.0
-    hostname: control-center
-    container_name: control-center
-    depends_on:
-      broker:
-        condition: service_healthy
-    ports:
-      - "9021:9021"
-    environment:
-      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
-      CONTROL_CENTER_REPLICATION_FACTOR: 1
-      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
-      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
-      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
-      CONFLIENT_METRICS_ENABLE: 'false'
-      PORT: 9021
-    networks:
-      - all_in_one
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:9021/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  airflow-init:
+    <<: *airflow-common
+    container_name: airflow-init
+    command: version
 
-  debezium:
-    image: debezium/connect:3.0.0.Final
-    container_name: debezium
-    hostname: debezium
-    depends_on:
-      postgres:
-        condition: service_healthy
-      broker:
-        condition: service_healthy
-    ports:
-      - '8093:8083'
-    environment:
-      BOOTSTRAP_SERVERS: broker:29092
-      CONNECT_REST_ADVERTISED_HOST_NAME: debezium
-      GROUP_ID: 1
-      CONFIG_STORAGE_TOPIC: connect_configs
-      STATUS_STORAGE_TOPIC: connect_statuses
-      OFFSET_STORAGE_TOPIC: connect_offsets
-      KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      ENABLE_DEBEZIUM_SCRIPTING: 'true'
-    healthcheck:
-      test:
-        [ 'CMD', 'curl', '--silent', '--fail', '-X', 'GET', 'http://localhost:8083/connectors', ]
-      start_period: 10s
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    networks:
-      all_in_one:
-
-  debezium-ui:
-    image: debezium/debezium-ui:2.1.2.Final
-    container_name: debezium-ui
-    hostname: debezium-ui
-    depends_on:
-      debezium:
-        condition: service_healthy
-    ports:
-      - '8081:8080'
-    environment:
-      KAFKA_CONNECT_URIS: http://debezium:8083
-    networks:
-      all_in_one:
-
+  # zookeeper:
+  #   image: confluentinc/cp-zookeeper:7.4.0
+  #   hostname: zookeeper
+  #   container_name: zookeeper
+  #   ports:
+  #     - '2181:2181'
+  #   environment:
+  #     ZOOKEEPER_CLIENT_PORT: 2181
+  #     ZOOKEEPER_TICK_TIME: 2000
+  #   healthcheck:
+  #     test: echo srvr | nc zookeeper 2181 || exit 1
+  #     start_period: 10s
+  #     retries: 20
+  #     interval: 10s
+  #   networks:
+  #     all_in_one:
 
 volumes:
   postgres-db-volume:
