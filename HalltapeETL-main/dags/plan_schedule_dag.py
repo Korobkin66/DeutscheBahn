@@ -10,7 +10,7 @@ DEFAULT_ARGS = {
 }
 
 with DAG(
-    dag_id='api_xml_to_sqlite',
+    dag_id='plan_schedule',
     default_args=DEFAULT_ARGS,
     description='Fetch XML from API and parse it into SQLite DB.db',
     start_date=datetime(2025, 5, 15),

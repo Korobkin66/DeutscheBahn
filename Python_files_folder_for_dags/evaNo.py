@@ -15,7 +15,7 @@ headers = {
     "accept": "application/xml"
 }
 
-conn = sqlite3.connect('DB.db')
+conn = sqlite3.connect('/opt/airflow/DB.db')
 cursor = conn.cursor()
 cursor.execute('''
 SELECT eva
@@ -30,7 +30,7 @@ conn.close()
 for station in station_number:
 
     response = requests.get(url+station, headers=headers)
-    folder = '../known_changes_folder'
+    folder = '/opt/airflow/known_changes_folder'
     dt = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
     with open(f'{folder}/fchg-{station}_{dt}.xml', 'wb') as foutput:

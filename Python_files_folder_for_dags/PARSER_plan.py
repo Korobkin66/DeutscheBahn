@@ -9,7 +9,7 @@ import sqlite3
 
 
 class PlanTrainSchedule:
-    def __init__(self, db_name="DB.db"):
+    def __init__(self, db_name="/opt/airflow/DB.db"):
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
         self.cursor.execute('''
@@ -91,7 +91,7 @@ def parse_plan_data(schedule):
 
 
 if __name__ == "__main__":
-    folder_path = "../plan_data_folder"
+    folder_path = "/opt/airflow/plan_data_folder"
     db = PlanTrainSchedule()
 
     for filename in os.listdir(folder_path):
