@@ -82,11 +82,20 @@ class TrainScheduleParser:
 
 def parse_plan_data(schedule):
     for train in schedule:
+        arrival = train.get("arrival", {})
+        departure = train.get("departure", {})
+
         yield (
-            train['id'], train["details"]["station"], train["details"]["category"], 
-            train["details"]["number"], train["arrival"]["time"], train["arrival"]["platform"],
-            train["arrival"]["route"], train["departure"]["time"], train["departure"]["platform"],
-            train["departure"]["route"]
+            train['id'],
+            train["details"]["station"],
+            train["details"]["category"],
+            train["details"]["number"],
+            arrival.get("time"),
+            arrival.get("platform"),
+            arrival.get("route"),
+            departure.get("time"),
+            departure.get("platform"),
+            departure.get("route")
         )
 
 

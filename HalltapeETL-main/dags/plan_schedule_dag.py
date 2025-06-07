@@ -25,7 +25,7 @@ with DAG(
         task_id='fetch_xml',
         bash_command=(
             'python3 /opt/airflow/Python_files_folder_for_dags/planned_data.py'
-            '--output /opt/airflow/plan_data_folder/plan_data_xml.xml'
+            # '--output /opt/airflow/plan_data_folder/plan_data_xml.xml'
         ),
     )
 
@@ -34,7 +34,7 @@ with DAG(
         task_id='parse_xml',
         bash_command=(
             'python3 /opt/airflow/Python_files_folder_for_dags/PARSER_plan.py '
-            '--input /opt/airflow/plan_data_folder/plan_data_xml.xml'
+            # '--input /opt/airflow/plan_data_folder/plan_data_xml.xml'
             '--db sqlite:////opt/airflow/DB.db'
         ),
     )

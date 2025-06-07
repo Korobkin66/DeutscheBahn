@@ -29,7 +29,7 @@ x-airflow-common: &airflow-common
     - ../plan_data_folder:/opt/airflow/plan_data_folder
     - ../Python_files_folder_for_dags:/opt/airflow/Python_files_folder_for_dags
     - ../known_changes_folder:/opt/airflow/known_changes_folder
-    - ../plan_data_folder:/opt/airflow/plan_data_folder
+
   depends_on:
     postgres:
       condition: service_healthy
