@@ -96,7 +96,7 @@ def parse_plan_data(schedule):
             departure.get("time"),
             departure.get("platform"),
             departure.get("route")
-        )
+        ) 
 
 
 if __name__ == "__main__":
